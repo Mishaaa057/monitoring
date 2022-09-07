@@ -102,9 +102,24 @@ class AppMonitorService:
     '''
     Generates and stores a report
     '''
-    with open(f'{PATH}logs/log_{date_()}.json', 'w') as file:
+
+    # Find out where the current script exists.
+    curr_fpath = os.path.dirname(os.path.realpath(__file__))
+
+    # Make a path where the logs to be stored.
+    log_fname = f'log_{date_()}.json'
+    log_dir = os.path.join(curr_fpath, 'logs')
+    log_fpath = os.path.join(log_dir, log_fname)
+    #print('log dir  ', log_dir)
+    #print('log fpath', log_fpath)
+
+    # Make sure path to logs exist. Create if not.
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    with open(log_fpath, 'w') as file:
         file.write(json.dumps(self.report))
-    print('\n Report saved! \n')
+    print(f'\n Report saved into {log_fpath}\n')
 
 
   def _register_app(self):
